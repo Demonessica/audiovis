@@ -480,26 +480,7 @@
 		c.lineJoin = 'round';
 		function logLoop(){
 			c.clearRect(innerWidth/-2,innerHeight/-2,innerWidth,innerHeight);
-
-			//debug spectrogram
 			c.fillStyle = 'white';
-			/*c.beginPath();
-			c.moveTo(innerWidth/-2, innerHeight/2);
-			for (i in dataArray){
-				c.lineTo(innerWidth/-2+spectPos[i]*innerWidth, innerHeight/2-Math.pow(dataArray[i]/256, 4)*innerHeight/4);
-			}
-			c.lineTo(innerWidth/2, innerHeight/2);
-			c.closePath();
-			c.fill();*/
-			/*c.beginPath();
-			c.moveTo(innerWidth/2, innerHeight/2);
-			for (i in dataArray){
-				c.lineTo(innerWidth/2-Math.log2(i)/Math.log2(ana.frequencyBinCount)*innerWidth/2, innerHeight/2-Math.pow(dataArray[i]/256, 4)*innerHeight/4);
-			}
-			c.moveTo(0, innerHeight/2);
-			c.closePath();
-			c.fill();*/
-
 			//loudest freq highlighter
 			amp = 0
 			ampIx = 0
