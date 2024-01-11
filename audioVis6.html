@@ -249,6 +249,7 @@
 		var audLeft = [];
 		var audRight = [];
 		transparent = false;
+		delOffset = 0;
 		window.onmousemove = function(e){
 			mouseX = e.clientX;
 			mouseY = e.clientY;
@@ -352,7 +353,7 @@
 		delB = a.createDelay(1.0);
 		delA.delayTime.value = 0;
 		delB.delayTime.value = 0;
-		offset = 0.1*a.sampleRate;
+		offset = 0*a.sampleRate;
 
 		inp.connect(delA);
 		inp.connect(delB);
@@ -470,7 +471,19 @@
 						document.getElementById('audio').loop = true;
 					}
 					break;
+				case 'Comma':
+					delOffset = Math.max(-0.5, delOffset-0.1);
+					updateDelays();
+					break;
+				case 'Period':
+					delOffset = Math.min(0.5, delOffset+0.1);
+					updateDelays();
+					break;
 			}
+		}
+		function updateDelays(){
+			delA.delayTime.value = Math.max(delOffset, 0);
+			delB.delayTime.value = Math.max(-delOffset, 0);
 		}
 
 		var spectDepth = 0.01;
@@ -480,35 +493,11 @@
 		c.lineJoin = 'round';
 		function logLoop(){
 			c.clearRect(innerWidth/-2,innerHeight/-2,innerWidth,innerHeight);
-			c.fillStyle = 'white';
-			//loudest freq highlighter
-			amp = 0
-			ampIx = 0
-			for(i = ampIxFrom; i < ampIxTo; i++){
-				if (dataArray[i] > amp){
-					amp = dataArray[i]
-					ampIx = i
-				}
-			}
-			tempX = Math.log2(ampIx)
-			/*c.beginPath()
-			c.moveTo(0,0)
-			c.lineTo(Math.sin((tempX-2)*Math.PI*2-0.05)*5000, -Math.cos((tempX-2)*Math.PI*2-0.05)*5000)
-			c.lineTo(Math.sin((tempX-2)*Math.PI*2+0.05)*5000, -Math.cos((tempX-2)*Math.PI*2+0.05)*5000)
-			c.closePath()
-			c.fillStyle = 'rgba(255, 255, 255, '+Math.pow(amp/256,8)+')'
-			c.fill()*/
-			
-			c.fillStyle = 'white';
 
 			//oscilliscope
 			c.lineCap = 'round';
 			pos = Math.round(((performance.now()-timeAtStart)/1000*playbackRate+posAtStart)*a.sampleRate);
 			c.beginPath();
-			/*c.moveTo(0,0);
-			for (i = 0; i > -innerWidth; i--) c.lineTo(i/2, (audLeft[pos+i-offset]||0)*128)
-			c.moveTo(0,0);
-			for (i = 0; i < innerWidth; i++) c.lineTo(i/2, (audRight[pos-i-offset]||0)*128)*/
 			c.moveTo(innerWidth/2, (audRight[pos-offset]||0)*spectHeight)
 			for (i = 2; i < spectLength; i++) c.lineTo(innerWidth/2/(1+i*spectDepth), (audRight[Math.floor((pos-i*5-offset)/5)*5]||0)/(1+i*spectDepth)*spectHeight)
 			c.moveTo(-innerWidth/2, (audLeft[pos-offset]||0)*spectHeight)
@@ -525,56 +514,7 @@
 			c.strokeStyle = gradients[0]
 			c.fillStyle = bgradients[0]
 			c.lineWidth = 2;
-			c.beginPath();                                                                                         //combined renderer
-			/*index = 4;
-			interp = true;
-			skip = false;
-			while (index < dataArray.length){
-				dat = 0
-				if (interp){
-					tempX = index;
-					dat = dataArray[Math.floor(Math.pow(2, tempX))-1]
-						+(
-							dataArray[Math.ceil(Math.pow(2, tempX))-1]
-							-dataArray[Math.floor(Math.pow(2, tempX))-1]
-						)
-						*(Math.pow(2, tempX)%1);
-					index += 1/32;
-					if (Math.pow(2, index) - Math.pow(2, tempX) >= 1){
-						interp = false;
-						index = Math.floor(Math.pow(2, index));
-					}
-				} else {
-					tempX = Math.log2(index);
-					dat = dataArray[index];
-					index++;
-				}
-				tempY = Math.pow(dat/256, 4)
-					*(innerHeight*0.35-150)
-					+150
-					//+(Math.log2(ana.frequencyBinCount)-tempX)*3
-					;
-				newX = Math.sin((tempX-2)*Math.PI*2)*tempY
-				newY = -Math.cos((tempX-2)*Math.PI*2)*tempY
-				if (lastX){ c.lineTo(newX,newY);} else {c.moveTo(newX, newY); lastX = newX; lastY = newY;}
-				if ((newX >= 0) != (lastX >= 0)){
-					if (transparent){c.globalCompositeOperation = 'destination-out'};
-					c.fill();
-					if (transparent){c.globalCompositeOperation = 'source-over'};
-					c.stroke();
-					c.beginPath();
-					c.moveTo(newX,newY);
-					c.strokeStyle = gradients[currGradient++];
-				}
-				lastX = newX;
-				lastY = newY;
-			}
-			c.stroke();
-			c.lineTo(0,0);
-			c.closePath();
-			if (transparent){c.globalCompositeOperation = 'destination-out'};
-			c.fill();
-			if (transparent){c.globalCompositeOperation = 'source-over'};*/
+			c.beginPath();
 			begin = true
 			prevY = 0
 			for (i in xCoords){
