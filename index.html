@@ -1,16 +1,19 @@
 <!DOCTYPE html>
+
 <head>
 	<title>Phoenix Audio Visualizer</title>
 	<style>
-		#in{
-  		display: none;
+		#in {
+			display: none;
 		}
-		#inputContainer{
+
+		#inputContainer {
 			display: flex;
 			width: 100%;
 			justify-content: center;
 		}
-		#in-label{
+
+		#in-label {
 			pointer-events: auto;
 			display: inline;
 			width: auto;
@@ -22,10 +25,12 @@
 			cursor: pointer;
 			border: 1px solid #aaa;
 		}
-		#in-label:hover{
+
+		#in-label:hover {
 			border: 1px solid white;
 		}
-		#captureMediaButton{
+
+		#captureMediaButton {
 			display: inline-block;
 			pointer-events: auto;
 			margin: 0 2px;
@@ -38,10 +43,12 @@
 			cursor: pointer;
 			border: 1px solid #aaa;
 		}
-		#captureMediaButton:hover{
+
+		#captureMediaButton:hover {
 			border: 1px solid white;
 		}
-		.button-up{
+
+		.button-up {
 			pointer-events: auto;
 			width: 0;
 			height: 0;
@@ -51,10 +58,12 @@
 			margin: 0 auto;
 			cursor: pointer;
 		}
-		.button-up:hover{
+
+		.button-up:hover {
 			border-bottom: 10px solid white;
 		}
-		.button-down{
+
+		.button-down {
 			pointer-events: auto;
 			width: 0;
 			height: 0;
@@ -64,10 +73,12 @@
 			margin: 0 auto;
 			cursor: pointer;
 		}
-		.button-down:hover{
+
+		.button-down:hover {
 			border-top: 10px solid white;
 		}
-		#playHead{
+
+		#playHead {
 			position: absolute;
 			background-color: #aaa;
 			border-radius: 50%;
@@ -76,21 +87,24 @@
 			height: 10px;
 			cursor: pointer;
 		}
-		#playHead:hover{
+
+		#playHead:hover {
 			width: 15px;
 			height: 15px;
 			background-color: white;
 			transform: translate(-7.5px, -7.5px);
 		}
-		#playButton{
+
+		#playButton {
 			pointer-events: auto;
 			width: 16px;
 			height: 16px;
 			margin: 0 auto;
 			cursor: pointer;
-			position:relative;
+			position: relative;
 		}
-		#playButton:before{
+
+		#playButton:before {
 			content: '';
 			position: absolute;
 			display: block;
@@ -100,10 +114,12 @@
 			border-top: 8px solid transparent;
 			border-bottom: 8px solid transparent;
 		}
-		#playButton:hover:before{
+
+		#playButton:hover:before {
 			border-left: 16px solid white;
 		}
-		#playButton.pause:before{
+
+		#playButton.pause:before {
 			content: '';
 			position: absolute;
 			display: block;
@@ -114,7 +130,8 @@
 			background-color: #aaa;
 			border: none;
 		}
-		#playButton.pause:after{
+
+		#playButton.pause:after {
 			content: '';
 			position: absolute;
 			display: block;
@@ -125,18 +142,23 @@
 			background-color: #aaa;
 			border: none;
 		}
-		#playButton.pause:hover:before, #playButton.pause:hover:after{
+
+		#playButton.pause:hover:before,
+		#playButton.pause:hover:after {
 			background-color: white;
 		}
-		.hide{
+
+		.hide {
 			visibility: hidden;
 		}
-		#volContainer{
+
+		#volContainer {
 			display: flex;
 			place-items: center;
 			place-content: center;
 		}
-		#vol{
+
+		#vol {
 			-webkit-appearance: none;
 			appearance: none;
 			display: block;
@@ -146,7 +168,8 @@
 			background-color: #bbb;
 			margin: 10px;
 		}
-		#vol::-webkit-slider-thumb{
+
+		#vol::-webkit-slider-thumb {
 			-webkit-appearance: none;
 			appearance: none;
 			border-radius: 5px;
@@ -155,7 +178,8 @@
 			border: 5px solid white;
 			cursor: pointer;
 		}
-		#vol::-moz-range-thumb{
+
+		#vol::-moz-range-thumb {
 			-webkit-appearance: none;
 			appearance: none;
 			border-radius: 5px;
@@ -164,15 +188,18 @@
 			border: 5px solid white;
 			cursor: pointer;
 		}
-		#vol::-webkit-slider-thumb:hover{
+
+		#vol::-webkit-slider-thumb:hover {
 			border: 7px solid white;
 			border-radius: 7px;
 		}
-		#vol::-moz-range-thumb{
+
+		#vol::-moz-range-thumb {
 			border: 7px solid white;
 			border-radius: 7px;
 		}
-		#volButton{
+
+		#volButton {
 			position: relative;
 			display: block;
 			background-color: white;
@@ -180,8 +207,9 @@
 			width: 6px;
 			height: 5px;
 		}
-		#volButton:before{
-			content:'';
+
+		#volButton:before {
+			content: '';
 			position: absolute;
 			left: -1px;
 			top: -2.5px;
@@ -190,8 +218,9 @@
 			border: 4px solid transparent;
 			border-right: 5px solid white;
 		}
-		#volButton:after{
-			content:'';
+
+		#volButton:after {
+			content: '';
 			position: absolute;
 			top: -9.5px;
 			left: -9px;
@@ -203,14 +232,18 @@
 		}
 	</style>
 </head>
+
 <body style='margin:0;overflow:hidden;background-color:black;'>
 	<audio id='audio'>
 		<source id='src' src='' type='audio/mpeg'>
 	</audio>
-	<video id='video' src='' class='hide' style='z-index:-1;position:absolute;left:0;right:0;width:100vw;height:100vh;object-fit:contain;'></video>
-	<img id='img' src='' class='hide' style='z-index:-1;position:absolute;left:0;right:0;width:100vw;height:100vh;object-fit:contain;'></img>
-	<canvas style='filter:drop-shadow(0 0 2px black)' id='main' ></canvas>
-	<div style='text-shadow:0 0 2px black;pointer-events:none;user-select:none;position:absolute;left:calc(50vw - 135px);top:calc(50vh - 135px);right:calc(50vw - 135px);bottom:calc(50vh - 135px);text-align:center;font-family:courier;color:white;border-radius:50%;display:flex;justify-content:space-between;'>
+	<video id='video' src='' class='hide'
+		style='z-index:-1;position:absolute;left:0;right:0;width:100vw;height:100vh;object-fit:contain;'></video>
+	<img id='img' src='' class='hide'
+		style='z-index:-1;position:absolute;left:0;right:0;width:100vw;height:100vh;object-fit:contain;'></img>
+	<canvas style='filter:drop-shadow(0 0 2px black)' id='main'></canvas>
+	<div
+		style='text-shadow:0 0 2px black;pointer-events:none;user-select:none;position:absolute;left:calc(50vw - 135px);top:calc(50vh - 135px);right:calc(50vw - 135px);bottom:calc(50vh - 135px);text-align:center;font-family:courier;color:white;border-radius:50%;display:flex;justify-content:space-between;'>
 		<div style='display:flex;flex-direction:column;justify-content:center;width:30px;flex-shrink:0;'>
 			<div class='button-up' onclick='updateQuality(1)'></div>
 			<span>Q</span>
@@ -221,13 +254,16 @@
 			<span id='cur' style='font-family:courier;'>00:00</span>
 			<span id='fps' style='font-family:courier'></span>
 			<div id='playButton' onclick='play(this)'></div>
-			<span id='name' style='font:bold 20px Helvetica;margin:auto;word-break:break-word;white-space:pre-wrap;overflow:hidden;'></span>
+			<span id='name'
+				style='font:bold 20px Helvetica;margin:auto;word-break:break-word;white-space:pre-wrap;overflow:hidden;'></span>
 			<div id='volContainer'>
 				<div id='volButton'></div>
-				<input id='vol' type='range' oninput='updateVolume(this)' onchange='updateVolume(this)' min='0' max='1' step='0.01' value='1'></input>
+				<input id='vol' type='range' oninput='updateVolume(this)' onchange='updateVolume(this)' min='0' max='1'
+					step='0.01' value='1'></input>
 			</div>
 			<div id='inputContainer'>
-				<label id='in-label'>Select media<input type='file' id='in' accept='audio/*,video/*,image/*' onchange='load(event)'></label>
+				<label id='in-label'>Select media<input type='file' id='in' accept='audio/*,video/*,image/*'
+						onchange='load(event)'></label>
 				<span id='captureMediaButton' onclick='startMediaCapture()'>C</span>
 			</div>
 			<span id='dur' style='color:#aaa;font-family:courier;'>00:00</span>
@@ -239,48 +275,29 @@
 			<div class='button-down' onclick='updateSmoothing(-0.1)'></div>
 		</div>
 	</div>
-	<div id='playHead' onmousedown='scrubbing = true; if(!activeSource.paused){pause(document.getElementById("playButton"));playing = true}else{playing = false}' style='top:calc(50vh - 140px);left:50vw;'></div>
+	<div id='playHead'
+		onmousedown='scrubbing = true; if(!activeSource.paused){pause(document.getElementById("playButton"));playing = true}else{playing = false}'
+		style='top:calc(50vh - 140px);left:50vw;'></div>
 	<script>
-		var activeSource = document.getElementById('audio');
-		var scrubbing = false;
-		var playing = false;
-		var mouseX = 0;
-		var mouseY = 0;
-		var audLeft = [];
-		var audRight = [];
-		transparent = false;
-		delOffset = 0;
-		window.onmousemove = function(e){
-			mouseX = e.clientX;
-			mouseY = e.clientY;
-		}
-		window.onmouseup = function(){
-			if(scrubbing){
-				scrubbing = false;
-				if(playing){
-					play(document.getElementById('playButton'))
-				};
-			};
-		}
-		play = function(e){
+		play = function (e) {
 			e.classList.add('pause');
-			e.onclick = function(){pause(this)};
+			e.onclick = function () { pause(this) };
 			activeSource.play();
 			updatePosition();
 			playbackRate = 1;
 		}
-		pause = function(e){
+		pause = function (e) {
 			e.classList.remove('pause');
-			e.onclick = function(){play(this)};
+			e.onclick = function () { play(this) };
 			activeSource.pause();
 			updatePosition();
 			playbackRate = 0;
 		}
-		updateVolume = function(t){
+		updateVolume = function (t) {
 			document.getElementById('audio').volume = document.getElementById('video').volume = t.value
 		}
-		load = function(e){
-			switch (e.target.files[0].type.split('/')[0]){
+		load = function (e) {
+			switch (e.target.files[0].type.split('/')[0]) {
 				case 'audio':
 					pause(document.getElementById('playButton'));
 					activeSource = document.getElementById('audio');
@@ -288,8 +305,8 @@
 					document.getElementById('name').innerHTML = e.target.files[0].name;
 					activeSource.load();
 					pause(document.getElementById('playButton'));
-					e.target.files[0].arrayBuffer().then(data => a.decodeAudioData(data, aud => {audLeft = aud.getChannelData(0);audRight = aud.getChannelData(1)}));
-				break;
+					e.target.files[0].arrayBuffer().then(data => a.decodeAudioData(data, aud => { audLeft = aud.getChannelData(0); audRight = aud.getChannelData(1) }));
+					break;
 				case 'video':
 					pause(document.getElementById('playButton'));
 					activeSource = document.getElementById('video');
@@ -299,101 +316,38 @@
 					document.getElementById('name').innerHTML = e.target.files[0].name;
 					activeSource.load();
 					pause(document.getElementById('playButton'));
-					e.target.files[0].arrayBuffer().then(data => a.decodeAudioData(data, aud => {audLeft = aud.getChannelData(0);audRight = aud.getChannelData(1)}));
-				break;
+					e.target.files[0].arrayBuffer().then(data => a.decodeAudioData(data, aud => { audLeft = aud.getChannelData(0); audRight = aud.getChannelData(1) }));
+					break;
 				case 'image':
 					document.getElementById('video').classList.add('hide');
 					document.getElementById('img').classList.remove('hide');
 					document.getElementById('img').src = URL.createObjectURL(e.target.files[0]);
-				break;
+					break;
 				default:
 					alert('unsupported file type');
-				break;
+					break;
 			};
 		}
-		document.getElementById('audio').onended = document.getElementById('video').onended = function(){pause(document.getElementById("playButton"))};
-		document.getElementById('audio').onloadedmetadata = function(){
-			temp = new Date(document.getElementById('audio').duration*1000);
-			document.getElementById('dur').innerHTML = ((temp.getMinutes() < 10)? '0'+temp.getMinutes() : temp.getMinutes())+':'+((temp.getSeconds() < 10)? '0'+temp.getSeconds() : temp.getSeconds());
-		}
-		document.getElementById('video').onloadedmetadata = function(){
-			temp = new Date(document.getElementById('video').duration*1000);
-			document.getElementById('dur').innerHTML = ((temp.getMinutes() < 10)? '0'+temp.getMinutes() : temp.getMinutes())+':'+((temp.getSeconds() < 10)? '0'+temp.getSeconds() : temp.getSeconds());
-		}
-		c = document.getElementById('main').getContext('2d', {desynchronized: true,});
-		document.getElementById('main').width = innerWidth;
-		document.getElementById('main').height = innerHeight;
-		c.setTransform(1,0,0,1,innerWidth/2,innerHeight/2);
-		c.lineJoin = c.lineCap = 'round'
-		onresize = function(){
-			document.getElementById('main').width = innerWidth;
-			document.getElementById('main').height = innerHeight;
-			c.setTransform(1,0,0,1,innerWidth/2,innerHeight/2);
-			c.lineJoin = c.lineCap = 'round'
-			spectLength = (innerWidth/300-1)/spectDepth
-		}
-		a = new AudioContext();
-		onmousedown = function(){
-			a.resume();
-			onmousedown = null;
-		}
-		let uIn;
-		startMediaCapture = function(){
-			navigator.mediaDevices.getDisplayMedia({audio: true})
-				.then((stream) => {
-					uIn = new MediaStreamAudioSourceNode(a, {mediaStream: stream});
-					uIn.connect(delA);
-				})
-				.catch((err) => {console.error('Capture error: '+ err)})
-		}
-		inp = a.createMediaElementSource(document.getElementById('audio'));
-		inpv = a.createMediaElementSource(document.getElementById('video'));
-		ana = a.createAnalyser();
-		delA = a.createDelay(1.0);
-		delB = a.createDelay(1.0);
-		delA.delayTime.value = 0;
-		delB.delayTime.value = 0;
-		offset = 0*a.sampleRate;
-
-		inp.connect(delA);
-		inp.connect(delB);
-		inpv.connect(delA);
-		inpv.connect(delB);
-		delA.connect(ana);
-		delB.connect(a.destination);
-
-		spectPos = [];
-		gradients = [];
-		bgradients = [];
-		xCoords = [];
-
-		ampIxFrom = 0;
-		ampIxTo = 0;
-		ampIx = 0;
-		amp = 0;
-
-		var quality = 13;
-		var smoothing = 0;
-		updateQuality = function(n){
-			quality = Math.max(5, Math.min(15, quality+n));
+		updateQuality = function (n) {
+			quality = Math.max(5, Math.min(15, quality + n));
 			document.getElementById('q').innerHTML = quality;
 			ana.fftSize = Math.pow(2, quality);
 			dataArray = new Uint8Array(ana.frequencyBinCount);
-			for (i in dataArray) spectPos[i] = Math.log2(i)/Math.log2(ana.frequencyBinCount)
+			for (i in dataArray) spectPos[i] = Math.log2(i) / Math.log2(ana.frequencyBinCount)
 			gradients = [];
 			bgradients = [];
-			for (i = 3; i < quality-1; i++){
-				g = c.createConicGradient(-Math.PI/2,0,0);
-				g.addColorStop(0, 'hsl('+((i-3)/(quality-4)*360)+'deg 100% 50%)');
-				g.addColorStop(1, 'hsl('+((i-2)/(quality-4)*360)+'deg 100% 50%)');
+			for (i = 3; i < quality - 1; i++) {
+				g = c.createConicGradient(-Math.PI / 2, 0, 0);
+				g.addColorStop(0, 'hsl(' + ((i - 3) / (quality - 4) * 360) + 'deg 100% 50%)');
+				g.addColorStop(1, 'hsl(' + ((i - 2) / (quality - 4) * 360) + 'deg 100% 50%)');
 				gradients.push(g);
-				g = c.createConicGradient(-Math.PI/2,0,0);
-				if (transparent){
-					g.addColorStop(0, 'hsla('+((i-3)/(quality-4)*360)+'deg 100% 50% / 20%)');
-					g.addColorStop(1, 'hsla('+((i-2)/(quality-4)*360)+'deg 100% 50% / 20%)');
+				g = c.createConicGradient(-Math.PI / 2, 0, 0);
+				if (transparent) {
+					g.addColorStop(0, 'hsla(' + ((i - 3) / (quality - 4) * 360) + 'deg 100% 50% / 20%)');
+					g.addColorStop(1, 'hsla(' + ((i - 2) / (quality - 4) * 360) + 'deg 100% 50% / 20%)');
 				} else {
-					g.addColorStop(0, 'hsl('+((i-3)/(quality-4)*360)+'deg 100% 10%)');
-					g.addColorStop(1, 'hsl('+((i-2)/(quality-4)*360)+'deg 100% 10%)');
+					g.addColorStop(0, 'hsl(' + ((i - 3) / (quality - 4) * 360) + 'deg 100% 10%)');
+					g.addColorStop(1, 'hsl(' + ((i - 2) / (quality - 4) * 360) + 'deg 100% 10%)');
 				}
 				bgradients.push(g);
 			}
@@ -401,48 +355,62 @@
 			xPos = 2
 			idx = 4
 			interp = true
-			while (idx < dataArray.length/2){
-				if (interp){
+			while (idx < dataArray.length / 2) {
+				if (interp) {
 					idx = Math.pow(2, xPos)
-					if (idx - xCoords[xCoords.length-1]?.[1] >= 1){
+					if (idx - xCoords[xCoords.length - 1]?.[1] >= 1) {
 						interp = false;
 						idx = Math.round(idx);
 						continue;
 					}
-					xCoords.push([xPos, idx, Math.sin(xPos*Math.PI*2), -Math.cos(xPos*Math.PI*2)])
-					xPos += 1/32
-				}else{
+					xCoords.push([xPos, idx, Math.sin(xPos * Math.PI * 2), -Math.cos(xPos * Math.PI * 2)])
+					xPos += 1 / 32
+				} else {
 					xPos = Math.log2(idx)
-					xCoords.push([xPos, idx, Math.sin(xPos*Math.PI*2), -Math.cos(xPos*Math.PI*2)])
+					xCoords.push([xPos, idx, Math.sin(xPos * Math.PI * 2), -Math.cos(xPos * Math.PI * 2)])
 					idx++
 				}
 			}
 			console.log(xCoords);
-			ampIxFrom = Math.floor(300/a.sampleRate*ana.fftSize)
-			ampIxTo = Math.floor(10000/a.sampleRate*ana.fftSize)
+			ampIxFrom = Math.floor(300 / a.sampleRate * ana.fftSize)
+			ampIxTo = Math.floor(10000 / a.sampleRate * ana.fftSize)
 		}
-		updateSmoothing = function(n){
-			smoothing = Math.round(Math.max(0, Math.min(1, smoothing+n))*10)/10;
+		updateSmoothing = function (n) {
+			smoothing = Math.round(Math.max(0, Math.min(1, smoothing + n)) * 10) / 10;
 			document.getElementById('s').innerHTML = smoothing;
 			ana.smoothingTimeConstant = smoothing;
 		}
-		updateQuality(0);
-		updateSmoothing(0);
-
-		timeArray = new Array(16);
-
-		var timeAtStart = 0;
-		var posAtStart = 0;
-		var playbackRate = 1;
-		function updatePosition(){
+		updatePosition = function () {
 			timeAtStart = performance.now();
 			posAtStart = activeSource.currentTime;
 		}
+		updateDelays = function () {
+			delA.delayTime.value = Math.max(delOffset, 0);
+			delB.delayTime.value = Math.max(-delOffset, 0);
+		}
+		startMediaCapture = function () {
+			navigator.mediaDevices.getDisplayMedia({ audio: true })
+				.then((stream) => {
+					uIn = new MediaStreamAudioSourceNode(a, { mediaStream: stream });
+					uIn.connect(delA);
+				})
+				.catch((err) => { console.error('Capture error: ' + err) })
+		}
 
-		var pastTime = 0;
-
-		document.onkeydown = function(e){
-			switch (e.code){
+		onmousemove = function (e) {
+			mouseX = e.clientX;
+			mouseY = e.clientY;
+		}
+		onmouseup = function () {
+			if (scrubbing) {
+				scrubbing = false;
+				if (playing) {
+					play(document.getElementById('playButton'))
+				};
+			};
+		}
+		onkeydown = function (e) {
+			switch (e.code) {
 				case 'ArrowLeft':
 					activeSource.currentTime -= 5;
 					updatePosition();
@@ -452,18 +420,18 @@
 					updatePosition();
 					break;
 				case 'ArrowUp':
-					document.getElementById('vol').value = Math.max(0, Math.min(1, Number(document.getElementById('vol').value)+0.1));
+					document.getElementById('vol').value = Math.max(0, Math.min(1, Number(document.getElementById('vol').value) + 0.1));
 					updateVolume(document.getElementById('vol'));
 					break;
 				case 'ArrowDown':
-					document.getElementById('vol').value = Math.max(0, Math.min(1, Number(document.getElementById('vol').value)-0.1));
+					document.getElementById('vol').value = Math.max(0, Math.min(1, Number(document.getElementById('vol').value) - 0.1));
 					updateVolume(document.getElementById('vol'));
 					break;
 				case 'Space':
 					document.getElementById('playButton').click();
 					break;
 				case 'KeyL':
-					if (document.getElementById('video').loop){
+					if (document.getElementById('video').loop) {
 						document.getElementById('video').loop = false;
 						document.getElementById('audio').loop = false;
 					} else {
@@ -472,36 +440,95 @@
 					}
 					break;
 				case 'Comma':
-					delOffset = Math.max(-0.5, delOffset-0.1);
+					delOffset = Math.max(-0.5, delOffset - 0.1);
 					updateDelays();
 					break;
 				case 'Period':
-					delOffset = Math.min(0.5, delOffset+0.1);
+					delOffset = Math.min(0.5, delOffset + 0.1);
 					updateDelays();
 					break;
 			}
 		}
-		function updateDelays(){
-			delA.delayTime.value = Math.max(delOffset, 0);
-			delB.delayTime.value = Math.max(-delOffset, 0);
+		onresize = function () {
+			document.getElementById('main').width = innerWidth;
+			document.getElementById('main').height = innerHeight;
+			c.setTransform(1, 0, 0, 1, innerWidth / 2, innerHeight / 2);
+			c.lineJoin = c.lineCap = 'round'
+			spectLength = (innerWidth / 300 - 1) / spectDepth
+		}
+		onmousedown = function () {
+			a.resume();
+			onmousedown = null;
+		}
+		document.getElementById('audio').onended = document.getElementById('video').onended = function () { pause(document.getElementById("playButton")) };
+		document.getElementById('audio').onloadedmetadata = function () {
+			temp = new Date(document.getElementById('audio').duration * 1000);
+			document.getElementById('dur').innerHTML = ((temp.getMinutes() < 10) ? '0' + temp.getMinutes() : temp.getMinutes()) + ':' + ((temp.getSeconds() < 10) ? '0' + temp.getSeconds() : temp.getSeconds());
+		}
+		document.getElementById('video').onloadedmetadata = function () {
+			temp = new Date(document.getElementById('video').duration * 1000);
+			document.getElementById('dur').innerHTML = ((temp.getMinutes() < 10) ? '0' + temp.getMinutes() : temp.getMinutes()) + ':' + ((temp.getSeconds() < 10) ? '0' + temp.getSeconds() : temp.getSeconds());
 		}
 
-		var spectDepth = 0.01;
-		var spectLength = (innerWidth/300-1)/spectDepth;
-		var spectHeight = 200;
+		activeSource = document.getElementById('audio');
+		scrubbing = false;
+		playing = false;
+		mouseX = 0;
+		mouseY = 0;
+		audLeft = [];
+		audRight = [];
+		transparent = false;
+		delOffset = 0;
+		a = new AudioContext();
+		let uIn;
+		inp = a.createMediaElementSource(document.getElementById('audio'));
+		inpv = a.createMediaElementSource(document.getElementById('video'));
+		ana = a.createAnalyser();
+		delA = a.createDelay(1.0);
+		delB = a.createDelay(1.0);
+		c = document.getElementById('main').getContext('2d', { desynchronized: true, powerPreference: "high-performance" });
+		offset = 0 * a.sampleRate;
+		spectPos = [];
+		gradients = [];
+		bgradients = [];
+		xCoords = [];
+		quality = 13;
+		smoothing = 0;
+		timeArray = new Array(16);
+		timeAtStart = 0;
+		posAtStart = 0;
+		playbackRate = 1;
+		pastTime = 0;
+		spectDepth = 0.01;
+		spectLength = (innerWidth / 300 - 1) / spectDepth;
+		spectHeight = 200;
 
-		c.lineJoin = 'round';
-		function logLoop(){
-			c.clearRect(innerWidth/-2,innerHeight/-2,innerWidth,innerHeight);
+		document.getElementById('main').width = innerWidth;
+		document.getElementById('main').height = innerHeight;
+		c.setTransform(1, 0, 0, 1, innerWidth / 2, innerHeight / 2);
+		c.lineJoin = c.lineCap = 'round'
+		delA.delayTime.value = 0;
+		delB.delayTime.value = 0;
+		inp.connect(delA);
+		inp.connect(delB);
+		inpv.connect(delA);
+		inpv.connect(delB);
+		delA.connect(ana);
+		delB.connect(a.destination);
+		updateQuality(0);
+		updateSmoothing(0);
+
+		function logLoop() {
+			c.clearRect(innerWidth / -2, innerHeight / -2, innerWidth, innerHeight);
 
 			//oscilliscope
 			c.lineCap = 'round';
-			pos = Math.round(((performance.now()-timeAtStart)/1000*playbackRate+posAtStart)*a.sampleRate);
+			pos = Math.round(((performance.now() - timeAtStart) / 1000 * playbackRate + posAtStart) * a.sampleRate);
 			c.beginPath();
-			c.moveTo(innerWidth/2, (audRight[pos-offset]||0)*spectHeight)
-			for (i = 2; i < spectLength; i++) c.lineTo(innerWidth/2/(1+i*spectDepth), (audRight[Math.floor((pos-i*5-offset)/5)*5]||0)/(1+i*spectDepth)*spectHeight)
-			c.moveTo(-innerWidth/2, (audLeft[pos-offset]||0)*spectHeight)
-			for (i = 2; i < spectLength; i++) c.lineTo(-innerWidth/2/(1+i*spectDepth), (audLeft[Math.floor((pos-i*5-offset)/5)*5]||0)/(1+i*spectDepth)*spectHeight)
+			c.moveTo(innerWidth / 2, (audRight[pos - offset] || 0) * spectHeight)
+			for (i = 2; i < spectLength; i++) c.lineTo(innerWidth / 2 / (1 + i * spectDepth), (audRight[Math.floor((pos - i * 5 - offset) / 5) * 5] || 0) / (1 + i * spectDepth) * spectHeight)
+			c.moveTo(-innerWidth / 2, (audLeft[pos - offset] || 0) * spectHeight)
+			for (i = 2; i < spectLength; i++) c.lineTo(-innerWidth / 2 / (1 + i * spectDepth), (audLeft[Math.floor((pos - i * 5 - offset) / 5) * 5] || 0) / (1 + i * spectDepth) * spectHeight)
 			c.strokeStyle = 'white';
 			c.lineWidth = 1;
 			c.stroke();
@@ -517,73 +544,73 @@
 			c.beginPath();
 			begin = true
 			prevY = 0
-			for (i in xCoords){
+			for (i in xCoords) {
 				tempX = xCoords[i][0]
 				let tempY;
-				if (xCoords[i][1]%1 == 0){
-					tempY = Math.pow(dataArray[xCoords[i][1]]/256, 4)
-					*(innerHeight*0.35-150)
-					+150
+				if (xCoords[i][1] % 1 == 0) {
+					tempY = Math.pow(dataArray[xCoords[i][1]] / 256, 4)
+						* (innerHeight * 0.35 - 150)
+						+ 150
 				} else {
-					tmp = dataArray[Math.floor(xCoords[i][1])] + (dataArray[Math.ceil(xCoords[i][1])]-dataArray[Math.floor(xCoords[i][1])])*(xCoords[i][1]%1)
-					tempY = Math.pow(tmp/256, 4)
-					*(innerHeight*0.35-150)
-					+150
+					tmp = dataArray[Math.floor(xCoords[i][1])] + (dataArray[Math.ceil(xCoords[i][1])] - dataArray[Math.floor(xCoords[i][1])]) * (xCoords[i][1] % 1)
+					tempY = Math.pow(tmp / 256, 4)
+						* (innerHeight * 0.35 - 150)
+						+ 150
 				}
-				newX = xCoords[i][2]*tempY
-				newY = xCoords[i][3]*tempY
-				if (begin){c.moveTo(1,0);c.strokeStyle = 'red';begin = false}
-				c.lineTo(newX,newY)
-				if (tempX%1 == 0){
-					if (transparent){
+				newX = xCoords[i][2] * tempY
+				newY = xCoords[i][3] * tempY
+				if (begin) { c.moveTo(1, 0); c.strokeStyle = 'red'; begin = false }
+				c.lineTo(newX, newY)
+				if (tempX % 1 == 0) {
+					if (transparent) {
 						c.globalCompositeOperation = 'destination-out'
 						c.fillStyle = 'black'
 						c.fill()
 						c.globalCompositeOperation = 'source-over'
-						c.fillStyle = bgradients[currGradient-1]
+						c.fillStyle = bgradients[currGradient - 1]
 					};
-					c.lineTo(0,newY);
+					c.lineTo(0, newY);
 					c.fill();
 					c.stroke();
 					c.beginPath();
-					c.moveTo(0,newY);
+					c.moveTo(0, newY);
 					c.strokeStyle = gradients[currGradient]
 					c.fillStyle = bgradients[currGradient]
 					currGradient++;
 				}
 			}
-			c.lineTo(0,-150);
-			if (transparent){c.globalCompositeOperation = 'destination-out'};
+			c.lineTo(0, -150);
+			if (transparent) { c.globalCompositeOperation = 'destination-out' };
 			c.fill();
-			if (transparent){c.globalCompositeOperation = 'source-over'};
+			if (transparent) { c.globalCompositeOperation = 'source-over' };
 			c.stroke();
 
 			//time
 			c.fillStyle = 'rgba(0,0,0,1)'
 			c.beginPath()
-			c.arc(0,0,150,0,Math.PI*2)
+			c.arc(0, 0, 150, 0, Math.PI * 2)
 			c.closePath()
 			c.fill()
-			if (scrubbing){
-				activeSource.currentTime = (Math.atan((mouseX-innerWidth/2)/((mouseY-innerHeight/2)*-1))/Math.PI/2+0.5*(mouseY >= innerHeight/2)+1)%1*activeSource.duration;
+			if (scrubbing) {
+				activeSource.currentTime = (Math.atan((mouseX - innerWidth / 2) / ((mouseY - innerHeight / 2) * -1)) / Math.PI / 2 + 0.5 * (mouseY >= innerHeight / 2) + 1) % 1 * activeSource.duration;
 				updatePosition();
 			};
 			c.lineWidth = 5;
 			c.lineCap = 'butt';
 			c.beginPath();
-			c.arc(0,0,140,-Math.PI/2,activeSource.currentTime/activeSource.duration*Math.PI*2-Math.PI/2);
+			c.arc(0, 0, 140, -Math.PI / 2, activeSource.currentTime / activeSource.duration * Math.PI * 2 - Math.PI / 2);
 			c.strokeStyle = 'white';
 			c.stroke();
-			temp = new Date(activeSource.currentTime*1000);
-			document.getElementById('cur').innerHTML = ((temp.getMinutes() < 10)? '0'+temp.getMinutes() : temp.getMinutes())+':'+((temp.getSeconds() < 10)? '0'+temp.getSeconds() : temp.getSeconds());
-			document.getElementById('playHead').style.left = 'calc(50vw - '+Math.sin(activeSource.currentTime/activeSource.duration*Math.PI*2)*-140+'px)';
-			document.getElementById('playHead').style.top = 'calc(50vh - '+Math.cos(activeSource.currentTime/activeSource.duration*Math.PI*2)*140+'px)';
+			temp = new Date(activeSource.currentTime * 1000);
+			document.getElementById('cur').innerHTML = ((temp.getMinutes() < 10) ? '0' + temp.getMinutes() : temp.getMinutes()) + ':' + ((temp.getSeconds() < 10) ? '0' + temp.getSeconds() : temp.getSeconds());
+			document.getElementById('playHead').style.left = 'calc(50vw - ' + Math.sin(activeSource.currentTime / activeSource.duration * Math.PI * 2) * -140 + 'px)';
+			document.getElementById('playHead').style.top = 'calc(50vh - ' + Math.cos(activeSource.currentTime / activeSource.duration * Math.PI * 2) * 140 + 'px)';
 
 			timeArray.push(performance.now());
 			timeArray.shift();
-			document.getElementById('fps').innerHTML = Math.round(1000/(timeArray[15]-timeArray[0])*16) + ' FPS';
+			document.getElementById('fps').innerHTML = Math.round(1000 / (timeArray[15] - timeArray[0]) * 16) + ' FPS';
 
-			if (activeSource.loop){
+			if (activeSource.loop) {
 				if (activeSource.currentTime < pastTime) updatePosition();
 				pastTime = activeSource.currentTime;
 			}
